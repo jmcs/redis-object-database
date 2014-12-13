@@ -5,6 +5,7 @@ import logging
 import yaml
 
 import rod.connection as connection
+import rod.errors as errors
 
 logger = logging.getLogger('rod.model')
 
@@ -29,6 +30,8 @@ class Model(object):
 
     @classmethod
     def all(cls):
+        if not connection.common:
+            raise errors.ConnectionNotSetup()
         logger.debug('Getting all %s', cls.prefix)
         keys = connection.common.keys(cls.prefix+'_*')
         raw_values = connection.common.mget(keys) if keys else []
@@ -37,6 +40,9 @@ class Model(object):
 
     @classmethod
     def get(cls, uid):
+
+        if not connection.common:
+            raise errors.ConnectionNotSetup()
         key = '{prefix}:{key}'.format(prefix=cls.prefix, key=uid)
         json_value = connection.common.get(key)
         if not json_value:
@@ -45,6 +51,8 @@ class Model(object):
         return cls(**values)
 
     def delete(self):
+        if not connection.common:
+            raise errors.ConnectionNotSetup()
         connection.common.delete(self.redis_key)
 
     @property
@@ -52,4 +60,6 @@ class Model(object):
         return '{prefix}:{key}'.format(prefix=self.prefix, key=getattr(self, self.key))
 
     def save(self):
+        if not connection.common:
+            raise errors.ConnectionNotSetup()
         connection.common.set(self._redis_key, str(self))
