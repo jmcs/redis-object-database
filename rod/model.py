@@ -34,7 +34,7 @@ class Model(object):
         if not connection.common:
             raise errors.ConnectionNotSetup()
         logger.debug('Getting all %s', cls.prefix)
-        keys = connection.common.keys(cls.prefix+'_*')
+        keys = connection.common.keys(cls.prefix+':*')
         raw_values = connection.common.mget(keys) if keys else []
         values = [cls(**yaml.load(v.decode())) for v in raw_values]
         return values
