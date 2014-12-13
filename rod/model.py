@@ -17,7 +17,8 @@ class Model(object):
 
     def __contains__(self, item):
         match = False
-        for attribute in self.search_properties:
+        search_properties = self.search_properties or vars(self)
+        for attribute in search_properties:
             value = getattr(self, attribute)
             try:
                 match += item.lower() in value.lower()
