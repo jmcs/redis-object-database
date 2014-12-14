@@ -7,12 +7,12 @@ from setuptools import setup
 setup(
     name = "rod",
     packages = ["rod"],
-    version = "2014.12.14",
+    version = "2014.12.15",
     description = "Redis Object Database",
     author = "João Santos",
     author_email = "jmcs@jsantos.eu",
     url = "https://github.com/jmcs/redis-object-database",
-    install_requires=["pyyaml", "redis"],
+    install_requires=["redis"],
     keywords = ["redis"],
     classifiers = [
         "Programming Language :: Python",
