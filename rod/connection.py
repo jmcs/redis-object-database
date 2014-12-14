@@ -4,7 +4,7 @@ import redis
 
 common = None   # common redis connection
 
-logger = logging.getLogger('rod')
+logger = logging.getLogger('rod.connection')
 
 
 def setup(redis_host='localhost', port=6379):

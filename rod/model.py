@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 import logging
-
-import yaml
+import pickle
 
 import rod.connection as connection
 import rod.errors as errors
@@ -26,9 +25,6 @@ class Model(object):
                 pass
         return match
 
-    def __str__(self):
-        return yaml.dump(vars(self))
-
     @classmethod
     def all(cls):
         if not connection.common:
@@ -36,7 +32,7 @@ class Model(object):
         logger.debug('Getting all %s', cls.prefix)
         keys = connection.common.keys(cls.prefix+':*')
         raw_values = connection.common.mget(keys) if keys else []
-        values = [cls(**yaml.load(v.decode())) for v in raw_values]
+        values = [cls(**pickle.loads(v)) for v in raw_values]
         return values
 
     @classmethod
@@ -45,10 +41,10 @@ class Model(object):
         if not connection.common:
             raise errors.ConnectionNotSetup()
         key = '{prefix}:{key}'.format(prefix=cls.prefix, key=uid)
-        json_value = connection.common.get(key)
-        if not json_value:
+        pickled = connection.common.get(key)
+        if not pickled:
             raise KeyError
-        values = yaml.load(json_value.decode())
+        values = pickle.loads(pickled)
         return cls(**values)
 
     def delete(self):
@@ -63,4 +59,5 @@ class Model(object):
     def save(self):
         if not connection.common:
             raise errors.ConnectionNotSetup()
-        connection.common.set(self._redis_key, str(self))
+        # dump only vars from current instance
+        connection.common.set(self._redis_key, pickle.dumps(vars(self)))
