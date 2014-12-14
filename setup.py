@@ -11,7 +11,7 @@ setup(
     description = "Redis Object Database",
     author = "João Santos",
     author_email = "jmcs@jsantos.eu",
-    url = "http://jsantos.eu",
+    url = "https://github.com/jmcs/redis-object-database",
     install_requires=["pyyaml", "redis"],
     keywords = ["redis"],
     classifiers = [
