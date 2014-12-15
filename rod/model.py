@@ -59,5 +59,6 @@ class Model(object):
     def save(self):
         if not connection.common:
             raise errors.ConnectionNotSetup()
-        # dump only vars from current instance
-        connection.common.set(self._redis_key, pickle.dumps(vars(self)))
+        # dump only "public" attributes from current instance
+        public_attributes = {name: value for name, value in vars(self).items() if not name.startswith('_')}
+        connection.common.set(self._redis_key, pickle.dumps(public_attributes))
