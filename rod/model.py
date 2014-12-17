@@ -50,7 +50,7 @@ class Model(object):
     def delete(self):
         if not connection.common:
             raise errors.ConnectionNotSetup()
-        connection.common.delete(self.redis_key)
+        connection.common.delete(self._redis_key)
 
     @property
     def _redis_key(self):
