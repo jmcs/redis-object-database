@@ -21,7 +21,7 @@ class Model(object):
             value = getattr(self, attribute)
             try:
                 match += item.lower() in value.lower()
-            except TypeError:
+            except (TypeError, AttributeError):
                 pass
         return match
 
