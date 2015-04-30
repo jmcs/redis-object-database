@@ -7,7 +7,7 @@ from setuptools import setup
 setup(
     name = "rod",
     packages = ["rod"],
-    version = "0.141217.1",
+    version = "0.150430.2",
     description = "Redis Object Database",
     author = "João Santos",
     author_email = "jmcs@jsantos.eu",
